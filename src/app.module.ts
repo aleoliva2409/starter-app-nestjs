@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSourceConfig } from './config/data.source';
+// import { DataSourceConfig } from './config/data.source';
 import { ProjectsModule } from './projects/projects.module';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
@@ -11,8 +12,24 @@ import { ProjectsModule } from './projects/projects.module';
       envFilePath: `./env/.env.${process.env.NODE_ENV}`,
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot(DataSourceConfig(process.env)),
-    // TypeOrmModule.forRoot(DataSourceConfig),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('DB_HOST'),
+        port: +configService.get('DB_PORT'),
+        username: configService.get('DB_USER'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [__dirname + '/../**/**/*.entities{.ts,.js}'],
+        migrations: [__dirname + '/../migrations/*{.ts,.js}'],
+        synchronize: false,
+        migrationsRun: true,
+        logging: false,
+        namingStrategy: new SnakeNamingStrategy(),
+      }),
+    }),
     UsersModule,
     ProjectsModule,
   ],
