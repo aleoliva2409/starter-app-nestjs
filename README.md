@@ -51,55 +51,61 @@ Create a migration
 
 ```bash
 $ npm run migrate:create <path>
+$ yarn migrate:create <path>
 
 # example
 $ npm run migrate:create src/migrations/migration_name
+$ yarn migrate:create src/migrations/migration_name
 ```
 
 Generate a migration
 
 ```bash
 $ npm run migrate:g <path>
+$ yarn migrate:g <path>
 
 # example
 $ npm run migrate:g src/migrations/migration_name
+$ yarn migrate:g src/migrations/migration_name
+
 ```
 
 Run a migration
 
 ```bash
 $ npm run migrate:run
+$ yarn migrate:run
 ```
 
 Revert a migration
 
 ```bash
 $ npm run migrate:rollback
+$ yarn migrate:rollback
 ```
 
-## Test
-
+Migrations scripts with yarn
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+"typeorm": "ts-node ./node_modules/typeorm/cli",
+"migrate:create": "yarn typeorm migration:create",
+"migrate:g": "yarn typeorm -d ./src/config/data.source.ts migration:generate",
+"migrate:run": "yarn typeorm migration:run -d ./src/config/data.source.ts",
+"migrate:rollback": "yarn typeorm -d ./src/config/data.source.ts migration:revert"
 ```
 
-## Support
+Migrations scripts with npm
+```bash
+"typeorm": "ts-node ./node_modules/typeorm/cli",
+"migrate:create": "npm run typeorm -- migration:create",
+"migrate:g": "npm run typeorm -- -d ./src/config/data.source.ts migration:generate",
+"migrate:run": "npm run typeorm migration:run -- -d ./src/config/data.source.ts",
+"migrate:rollback": "npm run typeorm -- -d ./src/config/data.source.ts migration:revert"
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Recommendations
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- To install ts-node globally
+```bash
+$ npm install -g ts-node
+```
+- Copy migrations scripts into the package.json

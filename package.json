@@ -19,10 +19,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migrate:create": "npm run typeorm -- migration:create",
-    "migrate:g": "npm run typeorm -- -d ./src/config/data.source.ts migration:generate",
-    "migrate:run": "npm run typeorm migration:run -- -d ./src/config/data.source.ts",
-    "migrate:rollback": "npm run typeorm -- -d ./src/config/data.source.ts migration:revert"
+    "migrate:create": "yarn typeorm migration:create",
+    "migrate:g": "yarn typeorm -d ./src/config/data.source.ts migration:generate",
+    "migrate:run": "yarn typeorm migration:run -d ./src/config/data.source.ts",
+    "migrate:rollback": "yarn typeorm -d ./src/config/data.source.ts migration:revert"
   },
   "dependencies": {
     "@nestjs/axios": "^2.0.0",
