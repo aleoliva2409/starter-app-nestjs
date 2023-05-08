@@ -1,13 +1,14 @@
-import { BaseEntity, Column, Entity } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { IUser } from '../interfaces/user.interface';
 import { ROLES } from '../../constants';
+import { BaseEntity } from '../../config/base.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {
-  @Column({ name: 'first_name' })
+  @Column()
   firstName: string;
 
-  @Column({ name: 'last_name' })
+  @Column()
   lastName: string;
 
   @Column()

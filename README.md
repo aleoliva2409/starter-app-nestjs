@@ -38,11 +38,43 @@ $ yarn install
 # development
 $ yarn run start
 
-# watch mode
+# development with watch mode
 $ yarn run start:dev
 
 # production mode
 $ yarn run start:prod
+```
+
+## Migrations
+
+Create a migration
+
+```bash
+$ npm run migrate:create <path>
+
+# example
+$ npm run migrate:create src/migrations/migration_name
+```
+
+Generate a migration
+
+```bash
+$ npm run migrate:g <path>
+
+# example
+$ npm run migrate:g src/migrations/migration_name
+```
+
+Run a migration
+
+```bash
+$ npm run migrate:run
+```
+
+Revert a migration
+
+```bash
+$ npm run migrate:rollback
 ```
 
 ## Test
