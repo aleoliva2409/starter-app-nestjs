@@ -2,14 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ErrorManager } from 'src/config';
-import { User } from './entities/user.entity';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
+import { User, UsersProjects } from './entities';
+import { CreateUserDto, UpdateUserDto, AddProjectDto } from './dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UsersProjects)
+    private readonly usersProjectsRepository: Repository<UsersProjects>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -20,9 +21,27 @@ export class UsersService {
     }
   }
 
+  async addProject(addProject: AddProjectDto) {
+    try {
+      return await this.usersProjectsRepository.save(addProject);
+    } catch (error) {
+      throw ErrorManager.createSignatureError(error.message);
+    }
+  }
+
   async findAll() {
     try {
-      return await this.userRepository.find();
+      return await this.userRepository.find({
+        // relations: {
+        //   projects: {
+        //     project: true
+        //   },
+        // },
+        // loadRelationIds: {
+        //   relations: ['projects'],
+        //   disableMixedMap: false
+        // }
+      });
     } catch (error) {
       throw ErrorManager.createSignatureError(error.message);
     }
@@ -33,6 +52,8 @@ export class UsersService {
       const user = await this.userRepository
         .createQueryBuilder('user')
         .where({ id })
+        .leftJoinAndSelect('user.projects', 'projects')
+        .leftJoinAndSelect('projects.project', 'project')
         .getOne();
 
       if (!user)

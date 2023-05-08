@@ -10,30 +10,30 @@ import { ROLES } from 'src/constants';
 export class UpdateUserDto {
   @IsString()
   @IsOptional()
-  firstName: string;
+  firstName?: string;
 
   @IsString()
   @IsOptional()
-  lastName: string;
+  lastName?: string;
 
   @IsNumber()
   @IsOptional()
-  age: number;
+  age?: number;
 
   @IsString()
   @IsEmail()
   @IsOptional()
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsString()
-  username: string;
+  username?: string;
 
   @IsString()
   @IsOptional()
-  password: string;
+  password?: string;
 
   @IsEnum(ROLES)
   @IsOptional()
-  role: ROLES;
+  role?: ROLES;
 }
