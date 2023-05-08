@@ -1,7 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { IUser } from '../interfaces/user.interface';
 import { ROLES } from '../../constants';
 import { BaseEntity } from '../../config/base.entity';
+import { UsersProjects } from './user-project.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity implements IUser {
@@ -14,10 +15,10 @@ export class User extends BaseEntity implements IUser {
   @Column()
   age: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()
@@ -25,4 +26,7 @@ export class User extends BaseEntity implements IUser {
 
   @Column({ type: 'enum', enum: ROLES })
   role: ROLES;
+
+  @OneToMany(() => UsersProjects, (usersProjects) => usersProjects.user)
+  usersProjects: UsersProjects[];
 }
